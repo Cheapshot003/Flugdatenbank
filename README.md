@@ -1,2 +1,2 @@
 # Flugdatenbank
-Eine primitive Art um deine Flüge zu verwalten 
+Eine primitive Art, deine Flüge zu verwalten 
