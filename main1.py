@@ -4,7 +4,7 @@ import sqlite3
 
 
 root = Tk()
-root.title("Flugdatenbank 0.01")
+root.title("Flugdatenbank 0.02")
 
 def checkdb():
     popup = Tk()
@@ -54,17 +54,19 @@ def getFlight():
             conn = sqlite3.connect("flugdata.db")
             cursor = conn.execute("SELECT * FROM fluege WHERE id=" + input1.get())
             row = cursor.fetchall()
-            input2a = row[0][1]
-            input3a = row[0][2]
-            input4a = row[0][3]
-            input5a = row[0][4]
-            input6a = row[0][5]
-            input7a = row[0][6]
-            input8a = row[0][7]
-            input9a = row[0][8]
-            input10a = row[0][9]
-            input11a = row[0][10]
-            input12a = row[0][11]
+            input44a= row[0][1]
+            input2a = row[0][2]
+            input3a = row[0][3]
+            input4a = row[0][4]
+            input5a = row[0][5]
+            input6a = row[0][6]
+            input7a = row[0][7]
+            input8a = row[0][8]
+            input9a = row[0][9]
+            input10a = row[0][10]
+            input11a = row[0][11]
+            input12a = row[0][12]
+            input44.delete(0,"end")
             input2.delete(0,"end")
             input3.delete(0,"end")
             input4.delete(0,"end")
@@ -76,6 +78,7 @@ def getFlight():
             input10.delete(0,"end")
             input11.delete(0,"end")
             input12.delete(0,"end")
+            input44.insert(0, input44a)
             input2.insert(0, input2a)
             input3.insert(0, input3a)
             input4.insert(0, input4a)
@@ -104,6 +107,7 @@ def addFlight():
     feld2 = input2.get()
     feld3 = input3.get()
     feld4 = input4.get()
+    feld44 = input44.get()
     feld5 = input5.get()
     feld6 = input6.get()
     feld7 = input7.get()
@@ -114,8 +118,8 @@ def addFlight():
     feld12 = input12.get()
     try:
 
-        cursor = conn.execute("INSERT INTO fluege (id, muster, kennzeichen, pic, begleiter, startart, startort, landeort, startzeit, landezeit, gesamtzeit, anmerkungen) \
-            VALUES (\"" + feld1 + "\", \"" + feld2 +"\", \"" + feld3 +"\", \"" + feld4 +"\", \"" + feld5 +"\", \"" + feld6 +"\", \"" + feld7 +"\", \"" + feld8 +"\", \"" + feld9 +"\", \"" + feld10 +"\", \"" + feld11 +"\", \"" + feld12 + "\")") 
+        cursor = conn.execute("INSERT INTO fluege (id, datum, muster, kennzeichen, pic, begleiter, startart, startort, landeort, startzeit, landezeit, gesamtzeit, anmerkungen) \
+            VALUES (\"" + feld1 + "\", \"" + feld44 +"\", \""  + feld2 +"\", \"" + feld3 +"\", \"" + feld4 +"\", \"" + feld5 +"\", \"" + feld6 +"\", \"" + feld7 +"\", \"" + feld8 +"\", \"" + feld9 +"\", \"" + feld10 +"\", \"" + feld11 +"\", \"" + feld12 + "\")") 
         conn.commit()
         conn.close()
         popup4 = Tk()
@@ -141,6 +145,7 @@ def clearStuff():
     input2.delete(0,"end")
     input3.delete(0,"end")
     input4.delete(0,"end")
+    input44.delete(0,"end")
     input5.delete(0,"end")
     input6.delete(0,"end")
     input7.delete(0,"end")
@@ -150,7 +155,7 @@ def clearStuff():
     input11.delete(0,"end")
     input12.delete(0,"end")
 def deleteFlight():
-    try:
+    if input1.get() != "":
         conn =sqlite3.connect("flugdata.db")
         cursor = conn.execute("DELETE FROM fluege WHERE id = " + input1.get() + ";")
         conn.commit()
@@ -161,9 +166,11 @@ def deleteFlight():
         labelw.pack()
         buttonw.pack()
         popup5.mainloop()
-    except sqlite3.Error as e:
+    
+    else:
         popup5 = Tk()
-        soos = "Fehler: " + e
+        popup5.title("Fehler")
+        soos = "Keine Nummer angegeben" + e
         labelw = Label(popup5, text=soos, font=(None, 15))
         buttonw = Button(popup5, text="Ok", command=popup5.destroy)
         labelw.pack()
@@ -173,10 +180,11 @@ def deleteFlight():
 buttonclear = Button(root, text="Felder leeren", command=clearStuff)
 button1 = Button(root, text="Flug hinzufügen", command=addFlight)
 label1 = Label(root, text="Flugdatenbank", font=(None, 30))
-label2 = Label(root, text="Version 0.01", font=(None, 15))
+label2 = Label(root, text="Version 0.02", font=(None, 15))
 label3 = Label(root, text="Nummer:", font=(None, 10))
 label4 = Label(root, text="Muster:", font=(None, 10))
 label5 = Label(root, text="Kennzeichen:", font=(None, 10))
+label55 = Label(root, text="Datum:", font=(None, 10))
 label6 = Label(root, text="PIC:", font=(None, 10))
 label7 = Label(root, text="Begleiter:", font=(None, 10))
 label8 = Label(root, text="Startart:", font=(None, 10))
@@ -187,10 +195,13 @@ label12 = Label(root, text="Landezeit:", font=(None, 10))
 label13 = Label(root, text="Gesamtzeit in Minuten:", font=(None, 10))
 label14 = Label(root, text="Anmerkungen:", font=(None, 10))
 input1 = Entry(root)
+input44 = Entry(root)
 input2 = Entry(root)
 input3 = Entry(root)
 input4 = Entry(root)
+
 input5 = Entry(root)
+
 input6 = Entry(root)
 input7 = Entry(root)
 input8 = Entry(root)
@@ -203,38 +214,42 @@ box2 = Button(root, text="Flug abrufen", command=getFlight)
 box3 = Button(root, text="Flug löschen", command=deleteFlight)
 box4 = Button(root, text="Datenbank prüfen", command=checkdb)
 
-buttonclear.grid(row=14, column=4)
-box4.grid(row=14, column=3)
+buttonclear.grid(row=15, column=1)
+box4.grid(row=15, column=2)
 box3.grid(row=2, column=4)
 box2.grid(row=2, column=3)
 box.grid(row=2, column=2)
-button1.grid(row=14, column=2)
+button1.grid(row=15, column=0)
 label1.grid(row=0, column=1)
+
 label2.grid(row=1, column=1)
 label3.grid(row=2, column=0)
-label4.grid(row=3, column=0)
-label5.grid(row=4, column=0)
-label6.grid(row=5, column=0)
-label7.grid(row=6, column=0)
-label8.grid(row=7, column=0)
-label9.grid(row=8, column=0)
-label10.grid(row=9, column=0)
-label11.grid(row=10, column=0)
-label12.grid(row=11, column=0)
-label13.grid(row=12, column=0)
-label14.grid(row=13, column=0)
+label55.grid(row=3, column=0)
+label4.grid(row=4, column=0)
+label5.grid(row=5, column=0)
+
+label6.grid(row=6, column=0)
+label7.grid(row=7, column=0)
+label8.grid(row=8, column=0)
+label9.grid(row=9, column=0)
+label10.grid(row=10, column=0)
+label11.grid(row=11, column=0)
+label12.grid(row=12, column=0)
+label13.grid(row=13, column=0)
+label14.grid(row=14, column=0)
 input1.grid(row=2, column=1)
-input2.grid(row=3, column=1)
-input3.grid(row=4, column=1)
-input4.grid(row=5, column=1)
-input5.grid(row=6, column=1)
-input6.grid(row=7, column=1)
-input7.grid(row=8, column=1)
-input8.grid(row=9, column=1)
-input9.grid(row=10, column=1)
-input10.grid(row=11, column=1)
-input11.grid(row=12, column=1)
-input12.grid(row=13, column=1)
+input44.grid(row=3, column=1)
+input2.grid(row=4, column=1)
+input3.grid(row=5, column=1)
+input4.grid(row=6, column=1)
+input5.grid(row=7, column=1)
+input6.grid(row=8, column=1)
+input7.grid(row=9, column=1)
+input8.grid(row=10, column=1)
+input9.grid(row=11, column=1)
+input10.grid(row=12, column=1)
+input11.grid(row=13, column=1)
+input12.grid(row=14, column=1)
 
 
 
